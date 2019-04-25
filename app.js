@@ -3,11 +3,14 @@ const morgan = require('morgan');
 const app=express();
 const {Page, User} = require('./models');
 //other way const {db} = require('./models');
+const wikiRouter = require('./routes/wiki');
+const userRouter = require('./routes/user');
 
 
 app.use(express.static('./view/stylesheets'));
 app.use(morgan('dev'));
-
+app.use('/wiki', wikiRouter);
+app.use('/user', userRouter);
 
 
 

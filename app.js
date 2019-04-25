@@ -1,11 +1,15 @@
 const express = require('express');
 const morgan = require('morgan');
-
-
 const app=express();
+const {Page, User} = require('./models');
+//other way const {db} = require('./models');
+
 
 app.use(express.static('./view/stylesheets'));
 app.use(morgan('dev'));
+
+
+
 
 app.get('/',(req,res) => {
     const ourString = `<!DOCTYPE html>
@@ -22,6 +26,19 @@ app.get('/',(req,res) => {
 
 
 const PORT=3000;
-app.listen(PORT, () =>{
+
+const init = async()=>{
+    try{
+    await Page.sync({force: true});  //force: true means we recreate tables based on js defn
+    await User.sync({force: true});
+    
+    // other way await db.sync({force: true});
+    app.listen(PORT, () =>{
     console.log(`App listening on port ${PORT}`);
-})
+    });
+    }catch(error){
+        console.error('you got here blah');
+    }
+}
+init();
+
